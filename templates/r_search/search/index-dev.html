@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TEARSHEET SEARCH</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    {{context|json_script:"context"}}
+	{% csrf_token %}
+	<script>
+	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
+	 const CONTEXT = {
+		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+		 'auth_token': read_context.auth_token,
+		 'tearsheets' : read_context.tearsheets,
+     'search_api' : '{% url 'react_views:r_search:search-api'  %}',
+     'logo_url' : '{% static 'images/bddwlogo.svg' %}',
+		};
+
+	</script>
+
+	<script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
